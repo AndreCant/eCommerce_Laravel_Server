@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class PassportAuthController extends Controller
 {
@@ -13,21 +15,33 @@ class PassportAuthController extends Controller
      */
     public function register(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|min:4',
-            'email' => 'required|email',
-            'password' => 'required|min:8',
+        $validator = Validator::make($request->all(),[
+                'name' => 'required|min:4',
+                'email' => 'required|email',
+                'password' => 'required|min:8',
+                'role' => Rule::in(['', 'admin', 'customer'])
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password)
-        ]);
+        if ($validator->fails()){
+            return response()->json(['error' => 'Bad request.', 'fails' => $validator->failed()], 400);
+        }
 
-        $token = $user->createToken('Laravel8PassportAuth')->accessToken;
+        if (User::where('email', $request->email)->get()->isEmpty()){
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'role' => $request->role
+            ]);
 
-        return response()->json(['token' => $token], 200);
+            $token = $user->createToken('Laravel8PassportAuth')->accessToken;
+
+            return response()->json(['token' => $token], 200);
+        }else{
+            return response()->json(['error' => 'Email is already registered.'], 409);
+        }
+
+
     }
 
     /**

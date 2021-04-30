@@ -1448,29 +1448,35 @@
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="422" parent="345" name="remember_token">
+    <column id="422" parent="345" name="role">
       <Position>6</Position>
+      <DataType>enum(&apos;admin&apos;, &apos;customer&apos;)|0e</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;customer&apos;</DefaultExpression>
+    </column>
+    <column id="423" parent="345" name="remember_token">
+      <Position>7</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="423" parent="345" name="created_at">
-      <Position>7</Position>
-      <DataType>timestamp|0s</DataType>
-    </column>
-    <column id="424" parent="345" name="updated_at">
+    <column id="424" parent="345" name="created_at">
       <Position>8</Position>
       <DataType>timestamp|0s</DataType>
     </column>
-    <index id="425" parent="345" name="users_email_unique">
+    <column id="425" parent="345" name="updated_at">
+      <Position>9</Position>
+      <DataType>timestamp|0s</DataType>
+    </column>
+    <index id="426" parent="345" name="users_email_unique">
       <ColNames>email</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="426" parent="345" name="PRIMARY">
+    <key id="427" parent="345" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="427" parent="345" name="users_email_unique">
+    <key id="428" parent="345" name="users_email_unique">
       <ColNames>email</ColNames>
       <UnderlyingIndexName>users_email_unique</UnderlyingIndexName>
     </key>
