@@ -20,7 +20,7 @@ class Customer
         if (auth()->user()->role == 'customer'){
             return $next($request);
         }else{
-            return redirect()->route(auth()->user()->role)->with('error', 'Access denied.');
+            return response()->json(['error' => 'Unauthorised.'], 401);
         }
     }
 }

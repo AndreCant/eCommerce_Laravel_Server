@@ -20,8 +20,7 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::post('register', [PassportAuthController::class, 'register']);
-Route::post('login', [PassportAuthController::class, 'login']);
+
 
 //Route::middleware('auth:api')->group(function () {
 //    Route::get('get-user', [PassportAuthController::class, 'userInfo']);
@@ -30,18 +29,31 @@ Route::post('login', [PassportAuthController::class, 'login']);
 //
 //});
 
-Route::group(['prefix' => 'guest', 'middleware' => ['guest:api']], function () {
 
+Route::group(['prefix' => 'rest'], function () {
+
+    Route::get('/', function () {})->name('/');
+    Route::post('login', [PassportAuthController::class, 'login']);
+    Route::post('register', [PassportAuthController::class, 'register']);
+
+    /* ADMIN USER */
+    Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'admin']], function () {
+        Route::get('get-user', [PassportAuthController::class, 'userInfo']);
+
+        Route::apiResource('registries', RegistryController::class);
+    });
+
+    /* CUSTOMER USER */
+    Route::group(['prefix' => 'customer', 'middleware' => ['auth:api', 'customer']], function () {
+        Route::get('get-user', [PassportAuthController::class, 'userInfo']);
+
+        Route::apiResource('registries', RegistryController::class);
+    });
+
+    /* GUEST USER */
+    Route::group(['prefix' => 'guest', 'middleware' => ['guest:api']], function () {
+
+    });
 });
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'admin']], function () {
-    Route::get('get-user', [PassportAuthController::class, 'userInfo']);
 
-    Route::apiResource('registries', RegistryController::class);
-});
-
-Route::group(['prefix' => 'customer', 'middleware' => ['auth:api', 'customer']], function () {
-    Route::get('get-user', [PassportAuthController::class, 'userInfo']);
-
-    Route::apiResource('registries', RegistryController::class);
-});
