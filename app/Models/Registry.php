@@ -14,11 +14,19 @@ class Registry extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     protected $fillable = [
         'name',
         'surname',
-        'address',
+        'street',
         "city",
+        "county",
+        "postal_code",
+        "state",
         "phone",
         "user_id"
     ];

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PassportAuthController;
 use App\Http\Controllers\RegistryController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,17 +36,16 @@ Route::group(['prefix' => 'rest'], function () {
     Route::get('/', function () {})->name('/');
     Route::post('login', [PassportAuthController::class, 'login']);
     Route::post('register', [PassportAuthController::class, 'register']);
+    Route::apiResource('user', UserController::class);
 
     /* ADMIN USER */
     Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'admin']], function () {
-        Route::get('get-user', [PassportAuthController::class, 'userInfo']);
 
         Route::apiResource('registries', RegistryController::class);
     });
 
     /* CUSTOMER USER */
     Route::group(['prefix' => 'customer', 'middleware' => ['auth:api', 'customer']], function () {
-        Route::get('get-user', [PassportAuthController::class, 'userInfo']);
 
         Route::apiResource('registries', RegistryController::class);
     });
