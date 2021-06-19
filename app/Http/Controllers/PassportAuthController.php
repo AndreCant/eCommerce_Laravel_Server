@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Registry;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
@@ -34,9 +35,13 @@ class PassportAuthController extends Controller
                 'role' => $request->role
             ]);
 
+            $registry = Registry::create([
+                'user_id' => $user->id
+            ]);
+
             $token = $user->createToken('Laravel8PassportAuth')->accessToken;
 
-            return response()->json(['token' => $token], 200);
+            return response()->json(['token' => $token, 'user_id' => $user->id], 200);
         }else{
             return response()->json(['error' => 'Email is already registered.'], 409);
         }

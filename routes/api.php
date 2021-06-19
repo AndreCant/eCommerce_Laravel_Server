@@ -34,20 +34,28 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'rest'], function () {
 
     Route::get('/', function () {})->name('/');
+    Route::get('/unauthorized', function () {
+        return response()->json(['error' => 'Unauthorised.'], 401);
+    })->name('/unauthorized');
+
     Route::post('login', [PassportAuthController::class, 'login']);
     Route::post('register', [PassportAuthController::class, 'register']);
-    Route::apiResource('user', UserController::class);
 
-    /* ADMIN USER */
-    Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'admin']], function () {
+    /* AUTH */
+    Route::group(['middleware' => ['auth:api']], function() {
+        Route::get('/user/{id}/registries', [RegistryController::class, 'show']);
+        Route::apiResource('user', UserController::class);
 
-        Route::apiResource('registries', RegistryController::class);
-    });
+        /* ADMIN USER */
+        Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 
-    /* CUSTOMER USER */
-    Route::group(['prefix' => 'customer', 'middleware' => ['auth:api', 'customer']], function () {
+        });
 
-        Route::apiResource('registries', RegistryController::class);
+        /* CUSTOMER USER */
+        Route::group(['prefix' => 'customer', 'middleware' => ['customer']], function () {
+
+
+        });
     });
 
     /* GUEST USER */

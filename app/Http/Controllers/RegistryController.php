@@ -9,38 +9,6 @@ use Illuminate\Http\Request;
 class RegistryController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $registries = Registry::all();
-        return response()->json([
-            "success" => true,
-            "message" => "Registry List",
-            "data" => $registries
-        ]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(Request $request)
-    {
-        $input = $request->all();
-        $registry= Registry::create($input);
-        return response()->json([
-            "success" => true,
-            "message" => "Registry created successfully.",
-            "data" => $registry
-        ]);
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -48,15 +16,11 @@ class RegistryController extends Controller
      */
     public function show($id)
     {
-        $registry = Registry::find($id);
+        $registry = Registry::where('user_id', $id)->get()[0];
         if (is_null($registry)) {
-            return $this->sendError('Product not found.');
+            return $this->sendError('Registry not found.', 404);
         }
-        return response()->json([
-            "success" => true,
-            "message" => "Product retrieved successfully.",
-            "data" => $registry
-        ]);
+        return response()->json($registry, 200);
     }
 
     /**
@@ -72,27 +36,6 @@ class RegistryController extends Controller
         $registry = Registry::find($id);
         $registry->name = $input['name'];
         $registry->save();
-        return response()->json([
-            "success" => true,
-            "message" => "Registry updated successfully.",
-            "data" => $registry
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $registry = Registry::find($id);
-        $registry->delete();
-        return response()->json([
-            "success" => true,
-            "message" => "Registry deleted successfully.",
-            "data" => $registry
-        ]);
+        return response()->json($registry, 200);
     }
 }

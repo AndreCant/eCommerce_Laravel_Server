@@ -16,14 +16,15 @@ class CreateRegistriesTable extends Migration
         Schema::create('registries', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('name');
-            $table->string('surname');
-            $table->string('street');
-            $table->string('city');
-            $table->string('county');
-            $table->integer('postal_code');
-            $table->string('state');
-            $table->integer('phone');
+            $table->string('name')->nullable(true);
+            $table->string('surname')->nullable(true);
+            $table->string('street')->nullable(true);
+            $table->string('city')->nullable(true);
+            $table->string('county')->nullable(true);
+            $table->integer('postal_code')->nullable(true);
+            $table->string('state')->nullable(true);
+            $table->integer('phone')->nullable(true);
+            $table->integer('user_id');
         });
     }
 

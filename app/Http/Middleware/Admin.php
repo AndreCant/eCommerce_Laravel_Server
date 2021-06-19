@@ -20,7 +20,7 @@ class Admin
         if (auth()->user()->role == 'admin'){
             return $next($request);
         }else{
-            return response()->json(['error' => 'Unauthorised.'], 401);
+            return route('/unauthorized');
         }
 
     }

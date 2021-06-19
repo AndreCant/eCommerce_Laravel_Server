@@ -21,10 +21,7 @@ class UserController extends Controller
         if (is_null($user)) {
             return $this->sendError('User not found.');
         }
-        return response()->json([
-            "success" => true,
-            "message" => "User retrieved successfully.",
-            "data" => $user
-        ]);
+
+        return response()->json($user, 200);
     }
 }
