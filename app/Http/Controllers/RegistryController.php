@@ -34,7 +34,14 @@ class RegistryController extends Controller
     {
         $input = $request->all();
         $registry = Registry::find($id);
-        $registry->name = $input['name'];
+        if (isset($input['name'])) $registry->name = $input['name'];;
+        if (isset($input['surname'])) $registry->surname = $input['surname'];;
+        if (isset($input['street'])) $registry->street = $input['street'];;
+        if (isset($input['city'])) $registry->city = $input['city'];;
+        if (isset($input['county'])) $registry->county = $input['county'];;
+        if (isset($input['postal_code'])) $registry->postal_code = $input['postal_code'];;
+        if (isset($input['state'])) $registry->state = $input['state'];
+        if (isset($input['phone'])) $registry->phone = $input['phone'];
         $registry->save();
         return response()->json($registry, 200);
     }

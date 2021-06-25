@@ -23,7 +23,7 @@ class CreateRegistriesTable extends Migration
             $table->string('county')->nullable(true);
             $table->integer('postal_code')->nullable(true);
             $table->string('state')->nullable(true);
-            $table->integer('phone')->nullable(true);
+            $table->bigInteger('phone')->nullable(true);
             $table->integer('user_id');
         });
     }
