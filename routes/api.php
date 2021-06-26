@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PassportAuthController;
 use App\Http\Controllers\RegistryController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,9 +44,15 @@ Route::group(['prefix' => 'rest'], function () {
 
     /* AUTH */
     Route::group(['middleware' => ['auth:api']], function() {
+        Route::apiResource('user', UserController::class);
+
+        /* Registry */
         Route::get('/user/{id}/registry', [RegistryController::class, 'show']);
         Route::patch('/user/{id}/registry', [RegistryController::class, 'update']);
-        Route::apiResource('user', UserController::class);
+
+        /* Payments */
+        Route::get('/user/{id}/payment', [PaymentController::class, 'showAll']);
+        Route::post('/user/{id}/payment', [PaymentController::class, 'create']);
 
         /* ADMIN USER */
         Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {

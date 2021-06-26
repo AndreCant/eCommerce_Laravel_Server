@@ -9,9 +9,9 @@ class Payment extends Model
 {
     use HasFactory;
 
-    public function registry()
+    public function user()
     {
-        return $this->belongsTo(Registry::class);
+        return $this->belongsTo(User::class);
     }
 
 
@@ -21,6 +21,6 @@ class Payment extends Model
         'number',
         'expiration',
         'cvc',
-        'registry_id'
+        'user_id'
     ];
 }

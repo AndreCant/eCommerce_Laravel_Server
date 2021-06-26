@@ -17,6 +17,11 @@ class User extends Authenticatable
         return $this->hasOne(Registry::class);
     }
 
+    public function payment()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
