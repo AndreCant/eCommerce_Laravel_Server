@@ -19,8 +19,9 @@ class Payment extends Model
         'name',
         'surname',
         'number',
-        'expiration',
-        'cvc',
+        'year',
+        'month',
+        'cvv',
         'user_id'
     ];
 }

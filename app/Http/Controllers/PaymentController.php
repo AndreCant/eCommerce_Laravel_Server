@@ -33,17 +33,38 @@ class PaymentController extends Controller
     public function create(Request $request, $id)
     {
         if (!is_null($request)) {
-            $user = Payment::create([
+            Payment::create([
                 'name' => $request->name,
                 'surname' => $request->surname,
                 'number' => $request->number,
-                'expiration' => $request->expiration,
-                'cvc' => $request->cvc,
+                'year' => $request->year,
+                'month' => $request->month,
+                'cvv' => $request->cvv,
                 'user_id' => $id
             ]);
 
             return response()->json(['message' => 'OK'], 200);
         }
+    }
 
+    /**
+     * Delete resource.
+     *
+     * @param  int  $id
+     * @param  int  $paymentId
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function delete($id, $paymentId)
+    {
+        if (!is_null($paymentId)) {
+            $payment = Payment::find($paymentId);
+
+            if (!is_null($payment)){
+                $payment->delete();
+                return response()->json(['message' => 'OK'], 200);
+            }else{
+                return response()->json(['message' => 'Not Found'], 404);
+            }
+        }
     }
 }

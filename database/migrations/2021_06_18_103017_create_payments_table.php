@@ -19,8 +19,9 @@ class CreatePaymentsTable extends Migration
             $table->string('name');
             $table->string('surname');
             $table->bigInteger('number');
-            $table->string('expiration');
-            $table->integer('cvc');
+            $table->integer('year');
+            $table->integer('month');
+            $table->integer('cvv');
             $table->bigInteger('user_id');
         });
     }

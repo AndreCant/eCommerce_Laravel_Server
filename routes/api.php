@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PassportAuthController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
@@ -39,8 +40,13 @@ Route::group(['prefix' => 'rest'], function () {
         return response()->json(['error' => 'Unauthorised.'], 401);
     })->name('/unauthorized');
 
+    /* Login e Registration */
     Route::post('login', [PassportAuthController::class, 'login']);
     Route::post('register', [PassportAuthController::class, 'register']);
+
+    /* Products */
+    Route::get('/products', [ProductController::class, 'showFiltered']);
+    Route::get('/product/{id}', [ProductController::class, 'show']);
 
     /* AUTH */
     Route::group(['middleware' => ['auth:api']], function() {
@@ -53,10 +59,12 @@ Route::group(['prefix' => 'rest'], function () {
         /* Payments */
         Route::get('/user/{id}/payment', [PaymentController::class, 'showAll']);
         Route::post('/user/{id}/payment', [PaymentController::class, 'create']);
+        Route::delete('/user/{id}/payment/{paymentId}', [PaymentController::class, 'delete']);
 
         /* ADMIN USER */
         Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
-
+            /* Products */
+            Route::post('/product', [ProductController::class, 'store']);
         });
 
         /* CUSTOMER USER */
