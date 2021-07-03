@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PassportAuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegistryController;
@@ -63,8 +64,12 @@ Route::group(['prefix' => 'rest'], function () {
 
         /* ADMIN USER */
         Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
-            /* Products */
+            /* Product */
             Route::post('/product', [ProductController::class, 'store']);
+
+            /* Images */
+            Route::post('/image', [ImageController::class, 'store']);
+            Route::delete('/image/{id}', [ImageController::class, 'delete']);
         });
 
         /* CUSTOMER USER */

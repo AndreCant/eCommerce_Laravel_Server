@@ -9,6 +9,11 @@ class Product extends Model
 {
     use HasFactory;
 
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
