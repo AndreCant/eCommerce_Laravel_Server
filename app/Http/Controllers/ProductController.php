@@ -13,10 +13,47 @@ class ProductController extends Controller
 {
     public function showFiltered(Request $request){
         $allParameters = $request->all();
-
         if(!is_null($allParameters)){
-            $products = Product::where($allParameters)->get();
             $filtered = [];
+            $products = Product::where('gender', $allParameters['gender'])
+                                ->where('type', $allParameters['type'])
+                                ->where(function ($query) use ($allParameters){
+                                    if(!is_null($allParameters['subtype'])){
+                                        foreach (json_decode($allParameters['subtype']) as $subtype){
+                                            $query->orWhere('sub_type', $subtype);
+                                        }
+                                    }
+                                })
+                                ->where(function ($query) use ($allParameters){
+                                    if(!is_null($allParameters['size'])){
+                                        foreach (json_decode($allParameters['size']) as $size){
+                                            $query->orWhere('size_available', 'LIKE', "%{$size}%");
+                                        }
+                                    }
+                                })
+                                ->where(function ($query) use ($allParameters){
+                                    if(!is_null($allParameters['price'])){
+                                        foreach (json_decode($allParameters['price']) as $price){
+                                            if ($price == 20){
+                                                $query->orWhere(function ($query){
+                                                    $query->where('price', '>=', 20)->where('price', '<', 50);
+                                                });
+                                            }elseif ($price == 50){
+                                                $query->orWhere(function ($query){
+                                                    $query->where('price', '>=', 50)->where('price', '<', 100);
+                                                });
+                                            }elseif ($price == 100){
+                                                $query->orWhere(function ($query){
+                                                    $query->where('price', '>=', 100)->where('price', '<', 150);
+                                                });
+                                            }elseif ($price == 150){
+                                                $query->orWhere(function ($query){
+                                                    $query->where('price', '>=', 150);
+                                                });
+                                            }
+                                        }
+                                    }
+                                })->get();
 
             if(!is_null($products)){
                 foreach ($products as $product) {
