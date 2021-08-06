@@ -26,6 +26,34 @@ class CreateRegistriesTable extends Migration
             $table->bigInteger('phone')->nullable(true);
             $table->bigInteger('user_id');
         });
+
+        DB::table('registries')->insert(
+            array(
+                'name' => 'Andrea',
+                'surname' => 'Cantagallo',
+                'street' => 'Via Fasulla 123',
+                'city' => 'Penne',
+                'county' => 'PE',
+                'postal_code' => 65017,
+                'state' => 'Italy',
+                'phone' => 3398745698,
+                'user_id' => 1,
+            )
+        );
+
+        DB::table('registries')->insert(
+            array(
+                'name' => 'Pippo',
+                'surname' => 'Franco',
+                'street' => 'Via Fasulla 899',
+                'city' => 'L\'Aquila',
+                'county' => 'AQ',
+                'postal_code' => 66100,
+                'state' => 'Italy',
+                'phone' => 3398455698,
+                'user_id' => 2,
+            )
+        );
     }
 
     /**

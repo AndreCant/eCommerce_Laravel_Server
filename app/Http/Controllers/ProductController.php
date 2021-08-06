@@ -66,7 +66,8 @@ class ProductController extends Controller
                     if(!is_null($product->images)) {
                         foreach ($product->images as $image) {
                             if ($image->is_primary){
-                                $lite['preview'] = 'http://127.0.0.1:8000/uploads/' . $image->path;
+                                //$lite['preview'] = 'http://127.0.0.1:8000/uploads/'$image->path;
+                                $lite['preview'] = $image->path;
                                 break;
                             }
                         }
@@ -105,7 +106,8 @@ class ProductController extends Controller
                 $prod['images'] = [];
                 foreach ($product->images as $image) {
                     array_push($prod['images'], [
-                        "url" => 'http://127.0.0.1:8000/uploads/' . $image->path,
+                        //"url" => 'http://127.0.0.1:8000/uploads/' . $image->path,
+                        "url" => $image->path,
                         "is_primary" => $image->is_primary
                     ]);
                 }

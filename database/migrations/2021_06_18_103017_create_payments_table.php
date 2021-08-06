@@ -24,6 +24,18 @@ class CreatePaymentsTable extends Migration
             $table->integer('cvv');
             $table->bigInteger('user_id');
         });
+
+        DB::table('payments')->insert(
+            array(
+                'name' => 'Pippo',
+                'surname' => 'Franco',
+                'number' => 8958965412365847,
+                'year' => 2025,
+                'month' => 04,
+                'cvv' => 987,
+                'user_id' => 2
+            )
+        );
     }
 
     /**
