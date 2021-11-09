@@ -146,4 +146,25 @@ class ProductController extends Controller
         return response()->json(["message" => "OK"], 200);
     }
 
+
+    public function showByIds(Request $request){
+        $allParameters = $request->all();
+        $productIds = json_decode($allParameters['id']);
+
+        if(!is_null($productIds)){
+            $products = Product::whereIn('id', $productIds)->get();
+            $prodAll = [];
+
+            foreach ($products as $product) {
+                $prod = $product->jsonSerialize();
+                $prod['previewUrl'] = $product->images[0]->path;
+                array_push($prodAll, $prod);
+            }
+
+            return response()->json($prodAll, 200);
+        }else{
+            return response()->json('Id list is empty.', 400);
+        }
+    }
+
 }

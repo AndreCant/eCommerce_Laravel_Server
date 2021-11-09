@@ -48,6 +48,7 @@ Route::group(['prefix' => 'rest'], function () {
     /* Products */
     Route::get('/products', [ProductController::class, 'showFiltered']);
     Route::get('/product/{id}', [ProductController::class, 'show']);
+    Route::get('/product', [ProductController::class, 'showByIds']);
 
     /* AUTH */
     Route::group(['middleware' => ['auth:api']], function() {
