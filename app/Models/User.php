@@ -22,16 +22,6 @@ class User extends Authenticatable
         return $this->hasMany(Payment::class);
     }
 
-    public function wishlist()
-    {
-        return $this->hasMany(Wishlist::class);
-    }
-
-    public function cart()
-    {
-        return $this->hasMany(Cart::class);
-    }
-
     /**
      * The attributes that are mass assignable.
      *

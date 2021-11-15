@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -62,6 +63,10 @@ Route::group(['prefix' => 'rest'], function () {
         Route::get('/user/{id}/payment', [PaymentController::class, 'showAll']);
         Route::post('/user/{id}/payment', [PaymentController::class, 'create']);
         Route::delete('/user/{id}/payment/{paymentId}', [PaymentController::class, 'delete']);
+
+        /* Orders */
+        Route::get('/user/{id}/orders', [OrderController::class, 'showByUser']);
+        Route::post('/user/{id}/order', [OrderController::class, 'create']);
 
         /* ADMIN USER */
         Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {

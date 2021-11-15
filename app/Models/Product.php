@@ -14,16 +14,6 @@ class Product extends Model
         return $this->hasMany(Image::class);
     }
 
-    public function wishlist()
-    {
-        return $this->hasMany(Wishlist::class);
-    }
-
-    public function cart()
-    {
-        return $this->hasMany(Cart::class);
-    }
-
     /**
      * The attributes that are mass assignable.
      *
