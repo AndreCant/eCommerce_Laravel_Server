@@ -24,4 +24,17 @@ class UserController extends Controller
 
         return response()->json($user, 200);
     }
+
+    public function showAll()
+    {
+        $users = User::all();
+
+        if (!is_null($users)){
+            foreach ($users as $user) {
+                $user->registry;
+            }
+        }
+
+        return response()->json($users, 200);
+    }
 }

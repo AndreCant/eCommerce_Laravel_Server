@@ -76,6 +76,9 @@ Route::group(['prefix' => 'rest'], function () {
             /* Images */
             Route::post('/image', [ImageController::class, 'store']);
             Route::delete('/image/{id}', [ImageController::class, 'delete']);
+
+            /* Users */
+            Route::get('/users', [UserController::class, 'showAll']);
         });
 
         /* CUSTOMER USER */
