@@ -13,7 +13,8 @@ class ProductController extends Controller
 {
     public function showFiltered(Request $request){
         $allParameters = $request->all();
-        if(!is_null($allParameters)){
+
+        if(!empty($allParameters)){
             $filtered = [];
             $products = Product::where('gender', $allParameters['gender'])
                                 ->where('type', $allParameters['type'])
@@ -77,7 +78,8 @@ class ProductController extends Controller
             }
             return response()->json($filtered, 200);
         }else{
-            return response()->json(["message" => "Method not allowed."], 405);
+            return response()->json(Product::all(), 200);
+//            return response()->json(["message" => "Method not allowed."], 405);
         }
     }
 
