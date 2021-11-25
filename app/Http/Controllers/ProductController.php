@@ -86,8 +86,12 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        $product = Product::create($input);
-        return response()->json($product, 200);
+        if ($input){
+            $product = Product::create($input);
+            return response()->json(["url" => "http://127.0.0.1:8000/api/rest/product/" . $product->id], 201);
+        }else{
+            return response()->json(["message" => "Empty payload!"], 400);
+        }
     }
 
     /**
@@ -99,42 +103,56 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
-        $prod = $product->jsonSerialize();
 
-        if (is_null($product)) {
-            return response()->json(["message" => "Product not found."], 404);
-        }else{
+        if ($product){
+            $prod = $product->jsonSerialize();
+
             if(!is_null($product->images)) {
                 $prod['images'] = [];
                 foreach ($product->images as $image) {
                     array_push($prod['images'], [
-                        //"url" => 'http://127.0.0.1:8000/uploads/' . $image->path,
                         "url" => $image->path,
                         "is_primary" => $image->is_primary
                     ]);
                 }
             }
             return response()->json($prod, 200);
+        }else{
+            return response()->json(null, 404);
         }
     }
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-//        $input = $request->all();
-//        $product->name = $input['name'];
-//        $product->detail = $input['detail'];
-//        $product->save();
-//        return response()->json([
-//            "success" => true,
-//            "message" => "Product updated successfully.",
-//            "data" => $product
-//        ]);
+        if ($request){
+            $input = $request->all();
+            $product = Product::find($id);
+
+            if ($product){
+                if (isset($input['name'])) $product->name = $input['name'];
+                if (isset($input['short_description'])) $product->short_description = $input['short_description'];
+                if (isset($input['description'])) $product->description = $input['description'];
+                if (isset($input['price'])) $product->price = $input['price'];
+                if (isset($input['gender'])) $product->gender = $input['gender'];
+                if (isset($input['type'])) $product->type = $input['type'];
+                if (isset($input['sub_type'])) $product->sub_type = $input['sub_type'];
+                if (isset($input['size_available'])) $product->size_available = $input['size_available'];
+                if (isset($input['color'])) $product->color = $input['color'];
+                if (isset($input['material'])) $product->material = $input['material'];
+                if (isset($input['collection'])) $product->collection = $input['collection'];
+                $product->save();
+                return response()->json(null, 204);
+            }else{
+                return response()->json(null, 404);
+            }
+        }else{
+            return response()->json(["message" => "Empty payload!"], 400);
+        }
     }
     /**
      * Remove the specified resource from storage.
@@ -142,10 +160,15 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function delete($id)
     {
-        $product->delete();
-        return response()->json(["message" => "OK"], 200);
+        $product = Product::find($id);
+        if ($product){
+            $product->delete();
+            return response()->json(null, 204);
+        }else{
+            return response()->json(null, 404);
+        }
     }
 
 

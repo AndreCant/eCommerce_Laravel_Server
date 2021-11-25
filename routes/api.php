@@ -39,7 +39,7 @@ Route::group(['prefix' => 'rest'], function () {
 
     Route::get('/', function () {})->name('/');
     Route::get('/unauthorized', function () {
-        return response()->json(['error' => 'Unauthorised.'], 401);
+        return response()->json(['error' => 'Unauthorized.'], 401);
     })->name('/unauthorized');
 
     /* Login e Registration */
@@ -72,6 +72,8 @@ Route::group(['prefix' => 'rest'], function () {
         Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
             /* Product */
             Route::post('/product', [ProductController::class, 'store']);
+            Route::patch('/product/{id}', [ProductController::class, 'update']);
+            Route::delete('/product/{id}', [ProductController::class, 'delete']);
 
             /* Images */
             Route::post('/image', [ImageController::class, 'store']);
