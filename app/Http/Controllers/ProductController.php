@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -87,7 +88,19 @@ class ProductController extends Controller
     {
         $input = $request->all();
         if ($input){
+            $image = [];
+            if (isset($input['previewUrl'])) {
+                $image['path'] = $input['previewUrl'];
+                unset($input['previewUrl']);
+            }
+
             $product = Product::create($input);
+
+            if (isset($image['path'])) {
+                $image['product_id'] = $product->id;
+                $image['is_primary'] = true;
+                Image::create($image);
+            }
             return response()->json(["url" => "http://127.0.0.1:8000/api/rest/product/" . $product->id], 201);
         }else{
             return response()->json(["message" => "Empty payload!"], 400);
