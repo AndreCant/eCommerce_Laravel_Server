@@ -81,6 +81,9 @@ Route::group(['prefix' => 'rest'], function () {
 
             /* Users */
             Route::get('/users', [UserController::class, 'showAll']);
+
+            /* Orders */
+            Route::get('/orders', [OrderController::class, 'showAll']);
         });
 
         /* CUSTOMER USER */

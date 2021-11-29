@@ -68,4 +68,23 @@ class OrderController extends Controller
         $order['items'] = $items;
         return response()->json($order, 200);
     }
+
+    public function showAll(){
+        $response = [];
+        $orders = Order::all();
+
+        if(!is_null($orders)) {
+            foreach ($orders as $order) {
+                $ordWithItems['id'] = $order->id;
+                $ordWithItems['code'] = $order->code;
+                $ordWithItems['status'] = $order->status;
+                $ordWithItems['payment_id'] = $order->payment_id;
+                $ordWithItems['user_id'] = $order->user_id;
+                $ordWithItems['items'] = $order->items;
+                array_push($response, $ordWithItems);
+            }
+        }
+
+        return response()->json($response, 200);
+    }
 }
