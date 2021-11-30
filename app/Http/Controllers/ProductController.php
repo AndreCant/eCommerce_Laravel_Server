@@ -79,8 +79,20 @@ class ProductController extends Controller
             }
             return response()->json($filtered, 200);
         }else{
-            return response()->json(Product::all(), 200);
-//            return response()->json(["message" => "Method not allowed."], 405);
+            $products = Product::all();
+
+            foreach ($products as $product) {
+                if(!is_null($product->images)) {
+                    foreach ($product->images as $image) {
+                        if ($image->is_primary){
+                            $product['previewUrl'] = $image->path;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return response()->json($products, 200);
         }
     }
 
@@ -158,6 +170,15 @@ class ProductController extends Controller
                 if (isset($input['color'])) $product->color = $input['color'];
                 if (isset($input['material'])) $product->material = $input['material'];
                 if (isset($input['collection'])) $product->collection = $input['collection'];
+                if (isset($input['previewUrl'])) {
+                    $image = Image::where('is_primary', true)->where('product_id', $id)->first();
+
+                    if (!is_null($image)){
+                        $image->path = $input['previewUrl'];
+                        $image->save();
+                    }
+                }
+
                 $product->save();
                 return response()->json(null, 204);
             }else{
