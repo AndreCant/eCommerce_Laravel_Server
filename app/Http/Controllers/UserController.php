@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if (is_null($user)) {
-            return $this->sendError('User not found.');
+             return $this->sendError('User not found.');
         }
 
         return response()->json($user, 200);
@@ -36,5 +36,28 @@ class UserController extends Controller
         }
 
         return response()->json($users, 200);
+    }
+
+    public function updateRole(Request $request, $id){
+
+        if ($request){
+            $fields = $request->all();
+
+            if ($fields){
+                $user = User::find($id);
+
+                if ($user){
+                    if (isset($fields['role'])) $user->role = $fields['role'];
+                    $user->save();
+                    return response()->json(null, 204);
+                }else{
+                    return response()->json(null, 404);
+                }
+            }else{
+                return response()->json(["message" => "Empty payload."], 400);
+            }
+        }else{
+            return response()->json(["message" => "Empty payload."], 400);
+        }
     }
 }

@@ -81,6 +81,7 @@ Route::group(['prefix' => 'rest'], function () {
 
             /* Users */
             Route::get('/users', [UserController::class, 'showAll']);
+            Route::patch('/user/{id}', [UserController::class, 'updateRole']);
 
             /* Orders */
             Route::get('/orders', [OrderController::class, 'showAll']);
