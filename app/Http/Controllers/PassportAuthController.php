@@ -43,7 +43,7 @@ class PassportAuthController extends Controller
 //            $user->remember_token = $token;
 //            $user->save();
 
-            return response()->json(['token' => $token, 'user_id' => $user->id], 200);
+            return response()->json(['token' => $token, 'user_id' => $user->id, 'user_role' => $user->role], 200);
         }else{
             return response()->json(['error' => 'Email is already registered.'], 409);
         }
@@ -64,9 +64,7 @@ class PassportAuthController extends Controller
         if (auth()->attempt($data)) {
             $user = auth()->user();
             $token = $user->createToken('Laravel8PassportAuth')->accessToken;
-//            $user->remember_token = $token;
-//            $user->save();
-            return response()->json(['token' => $token, 'user_id' => auth()->user()->id], 200);
+            return response()->json(['token' => $token, 'user_id' => auth()->user()->id, 'user_role' => auth()->user()->role], 200);
         } else {
             return response()->json(['error' => 'Unauthorised'], 401);
         }
