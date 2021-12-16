@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class PaymentController extends Controller
 {
@@ -16,11 +19,9 @@ class PaymentController extends Controller
      */
     public function showAll($id)
     {
-        $payments = Payment::where('user_id', $id)->get();
-        if (is_null($payments)) {
-            return $this->sendError('Payments not found.', 404);
-        }
-        return response()->json($payments, 200);
+        if (!User::find($id))  return response()->json(null, 404);
+
+        return response()->json(Payment::where('user_id', $id)->get(), 200);
     }
 
     /**
@@ -33,6 +34,21 @@ class PaymentController extends Controller
     public function create(Request $request, $id)
     {
         if (!is_null($request)) {
+            if (!User::find($id))  return response()->json(null, 404);
+
+            $validator = Validator::make($request->all(),[
+                'name' => 'required',
+                'surname' => 'required',
+                'number' => 'required',
+                'year' => 'required',
+                'month' => 'required',
+                'cvv' => 'required'
+            ]);
+
+            if ($validator->fails()){
+                return response()->json(['error' => 'Bad request.', 'fails' => $validator->failed()], 400);
+            }
+
             Payment::create([
                 'name' => $request->name,
                 'surname' => $request->surname,
@@ -43,7 +59,9 @@ class PaymentController extends Controller
                 'user_id' => $id
             ]);
 
-            return response()->json(['message' => 'OK'], 200);
+            return response()->json(null, 204);
+        }else{
+            return response()->json(null, 400);
         }
     }
 
@@ -56,15 +74,15 @@ class PaymentController extends Controller
      */
     public function delete($id, $paymentId)
     {
-        if (!is_null($paymentId)) {
-            $payment = Payment::find($paymentId);
+        if (!User::find($id))  return response()->json(null, 404);
 
-            if (!is_null($payment)){
-                $payment->delete();
-                return response()->json(['message' => 'OK'], 200);
-            }else{
-                return response()->json(['message' => 'Not Found'], 404);
-            }
+        $payment = Payment::find($paymentId);
+
+        if ($payment){
+            $payment->delete();
+            return response()->json(null, 204);
+        }else{
+            return response()->json(null, 404);
         }
     }
 }

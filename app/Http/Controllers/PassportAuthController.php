@@ -40,15 +40,11 @@ class PassportAuthController extends Controller
             ]);
 
             $token = $user->createToken('Laravel8PassportAuth')->accessToken;
-//            $user->remember_token = $token;
-//            $user->save();
 
             return response()->json(['token' => $token, 'user_id' => $user->id, 'user_role' => $user->role], 200);
         }else{
             return response()->json(['error' => 'Email is already registered.'], 409);
         }
-
-
     }
 
     /**
@@ -66,7 +62,7 @@ class PassportAuthController extends Controller
             $token = $user->createToken('Laravel8PassportAuth')->accessToken;
             return response()->json(['token' => $token, 'user_id' => auth()->user()->id, 'user_role' => auth()->user()->role], 200);
         } else {
-            return response()->json(['error' => 'Unauthorised'], 401);
+            return response()->json(null, 401);
         }
     }
 

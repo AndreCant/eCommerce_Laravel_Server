@@ -21,25 +21,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
-
-
-//Route::middleware('auth:api')->group(function () {
-//    Route::get('get-user', [PassportAuthController::class, 'userInfo']);
-//
-//    Route::apiResource('registries', RegistryController::class);
-//
-//});
-
-
 Route::group(['prefix' => 'rest'], function () {
 
     Route::get('/', function () {})->name('/');
     Route::get('/unauthorized', function () {
-        return response()->json(['error' => 'Unauthorized.'], 401);
+        return response()->json(null, 401);
     })->name('/unauthorized');
 
     /* Login e Registration */
@@ -86,17 +72,6 @@ Route::group(['prefix' => 'rest'], function () {
             /* Orders */
             Route::get('/orders', [OrderController::class, 'showAll']);
         });
-
-        /* CUSTOMER USER */
-        Route::group(['prefix' => 'customer', 'middleware' => ['customer']], function () {
-
-
-        });
-    });
-
-    /* GUEST USER */
-    Route::group(['prefix' => 'guest', 'middleware' => ['guest:api']], function () {
-
     });
 });
 
