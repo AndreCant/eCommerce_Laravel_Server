@@ -8,6 +8,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Symfony\Component\Console\Input\Input;
 
 class ProductController extends Controller
@@ -16,6 +18,15 @@ class ProductController extends Controller
         $allParameters = $request->all();
 
         if(!empty($allParameters)){
+            if (!isset($allParameters['gender']) ||
+                !isset($allParameters['type']) ||
+                !isset($allParameters['subtype']) ||
+                !isset($allParameters['size']) ||
+                !isset($allParameters['price'])
+            ){
+                return response()->json(null, 422);
+            }
+
             $filtered = [];
             $products = Product::where('gender', $allParameters['gender'])
                                 ->where('type', $allParameters['type'])
@@ -99,6 +110,17 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+
+        if (!isset($input['gender']) ||
+            !isset($input['type']) ||
+            !isset($input['name']) ||
+            !isset($input['price']) ||
+            !isset($input['collection']) ||
+            !isset($input['color'])
+        ){
+            return response()->json(null, 422);
+        }
+
         if ($input){
             $image = [];
             if (isset($input['previewUrl'])) {
@@ -115,7 +137,7 @@ class ProductController extends Controller
             }
             return response()->json(["url" => "http://127.0.0.1:8000/api/rest/product/" . $product->id], 201);
         }else{
-            return response()->json(["message" => "Empty payload!"], 400);
+            return response()->json(null, 400);
         }
     }
 
@@ -185,7 +207,7 @@ class ProductController extends Controller
                 return response()->json(null, 404);
             }
         }else{
-            return response()->json(["message" => "Empty payload!"], 400);
+            return response()->json(null, 400);
         }
     }
     /**
@@ -208,6 +230,9 @@ class ProductController extends Controller
 
     public function showByIds(Request $request){
         $allParameters = $request->all();
+
+        if (!isset($allParameters['id'])) return response()->json(null, 422);
+
         $productIds = json_decode($allParameters['id']);
 
         if(!is_null($productIds)){
@@ -222,7 +247,7 @@ class ProductController extends Controller
 
             return response()->json($prodAll, 200);
         }else{
-            return response()->json('Id list is empty.', 400);
+            return response()->json(null, 422);
         }
     }
 

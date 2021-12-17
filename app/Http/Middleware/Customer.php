@@ -20,7 +20,7 @@ class Customer
         if (auth()->user()->role == 'customer'){
             return $next($request);
         }else{
-            return response()->json(['error' => 'Unauthorized.'], 401);
+            return response()->json(null, 401);
         }
     }
 }

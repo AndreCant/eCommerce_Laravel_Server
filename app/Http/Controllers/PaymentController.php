@@ -59,7 +59,7 @@ class PaymentController extends Controller
                 'user_id' => $id
             ]);
 
-            return response()->json(null, 204);
+            return response()->json(["url" => "http://127.0.0.1:8000/api/rest/user/" . $id . "/payment"], 201);
         }else{
             return response()->json(null, 400);
         }

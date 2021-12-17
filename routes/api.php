@@ -39,7 +39,8 @@ Route::group(['prefix' => 'rest'], function () {
 
     /* AUTH */
     Route::group(['middleware' => ['auth:api']], function() {
-        Route::apiResource('user', UserController::class);
+        /* User */
+        Route::get('/user/{id}', [UserController::class, 'show']);
 
         /* Registry */
         Route::get('/user/{id}/registry', [RegistryController::class, 'show']);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderLineItem;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -18,8 +19,10 @@ class OrderController extends Controller
     public function showByUser($id)
     {
         if (is_null($id)) {
-            return response()->json('User id null.', 400);
+            return response()->json(null, 400);
         }else{
+            if (!User::find($id))  return response()->json(null, 404);
+
             $response = [];
             $orders = Order::where('user_id', $id)->get();
 
@@ -41,14 +44,15 @@ class OrderController extends Controller
 
     public function create(Request $request, $id)
     {
-        if (is_null($request)) return response()->json('Empty request.', 400);
+        if (is_null($request)) return response()->json(null, 422);
+        if (!User::find($id))  return response()->json(null, 404);
 
         $input = $request->all();
 
-        if (!$input) return response()->json('Empty body.', 400);
-        if (is_null($input['items'])) return response()->json('Empty line items.', 400);
-        if (is_null($input['payment_id'])) return response()->json('Empty payment.', 400);
-        if (is_null($id)) return response()->json('Empty user.', 400);
+        if (!$input) return response()->json(null, 422);
+        if (!isset($input['items']) || is_null($input['items'])) return response()->json(null, 422);
+        if (!isset($input['payment_id']) || is_null($input['payment_id'])) return response()->json(null, 422);
+        if (is_null($id)) return response()->json(null, 422);
 
         $order['payment_id'] = $input['payment_id'];
         $order['user_id'] = (int) $id;
@@ -66,7 +70,7 @@ class OrderController extends Controller
         }
 
         $order['items'] = $items;
-        return response()->json($order, 200);
+        return response()->json(["url" => "http://127.0.0.1:8000/api/rest/user/" . $id . "/orders"], 201);
     }
 
     public function showAll(){

@@ -18,11 +18,11 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        if (is_null($user)) {
-             return $this->sendError('User not found.');
+        if ($user) {
+            return response()->json($user, 200);
+        }else{
+            return response()->json(null, 404);
         }
-
-        return response()->json($user, 200);
     }
 
     public function showAll()

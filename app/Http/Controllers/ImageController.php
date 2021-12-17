@@ -11,16 +11,21 @@ class ImageController extends Controller
 {
     public function store(Request $request)
     {
-        $file = $request->file('img');
-        $path = $file->store('images');
-//        Storage::get($path);
+        if (!isset($request['product_id']) || !isset($request['is_primary'])) return response()->json(null, 422);
+
+        if (isset($request['path'])) {
+            $path = $request['path'];
+        }else{
+            $file = $request->file('img');
+            $path = $file->store('images');
+        }
 
         $image = Image::create([
             "product_id" => $request["product_id"],
             "is_primary" => $request["is_primary"],
             "path" => $path
         ]);
-        return response()->json($image, 200);
+        return response()->json(["url" => $image->path], 201);
     }
 
     public function delete($id)
@@ -33,9 +38,9 @@ class ImageController extends Controller
                 $image->delete();
                 Storage::delete($path);
 
-                return response()->json(['message' => 'OK'], 200);
+                return response()->json(null, 204);
             }else{
-                return response()->json(['message' => 'Not Found'], 404);
+                return response()->json(null, 404);
             }
         }
     }
