@@ -17,7 +17,6 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'customer'])->default('customer');
             $table->rememberToken();
@@ -36,7 +35,7 @@ class CreateUsersTable extends Migration
         DB::table('users')->insert(
             array(
                 'name' => 'Customer101',
-                'email' => 'c@c.it',
+                'email' => 'customer@customer.it',
                 'password' => bcrypt('Admin123?'),
                 'role' => 'customer',
             )

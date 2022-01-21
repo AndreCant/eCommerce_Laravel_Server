@@ -7,8 +7,8 @@ use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +36,9 @@ Route::group(['prefix' => 'rest'], function () {
     Route::get('/products', [ProductController::class, 'showFiltered']);
     Route::get('/product/{id}', [ProductController::class, 'show']);
     Route::get('/product', [ProductController::class, 'showByIds']);
+
+    Route::get('/categories', [CategoryController::class, 'showAll']);
+    Route::get('/category/{name}', [CategoryController::class, 'showByName']);
 
     /* AUTH */
     Route::group(['middleware' => ['auth:api']], function() {
