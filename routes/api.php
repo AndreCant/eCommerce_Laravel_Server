@@ -75,6 +75,11 @@ Route::group(['prefix' => 'rest'], function () {
 
             /* Orders */
             Route::get('/orders', [OrderController::class, 'showAll']);
+
+            /* Category */
+            Route::post('/category', [CategoryController::class, 'create']);
+            Route::put('/category/{id}', [CategoryController::class, 'update']);
+            Route::delete('/category/{id}', [CategoryController::class, 'delete']);
         });
     });
 });
