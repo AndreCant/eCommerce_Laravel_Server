@@ -7,6 +7,7 @@ use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\BannerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 
@@ -78,8 +79,16 @@ Route::group(['prefix' => 'rest'], function () {
 
             /* Category */
             Route::post('/category', [CategoryController::class, 'create']);
-            Route::put('/category/{id}', [CategoryController::class, 'update']);
+            Route::patch('/category/{id}', [CategoryController::class, 'update']);
             Route::delete('/category/{id}', [CategoryController::class, 'delete']);
+
+            /* Banner */
+            Route::post('/banner', [BannerController::class, 'create']);
+            Route::get('/banner/{name}', [BannerController::class, 'showByName']);
+            Route::get('/banners', [BannerController::class, 'showAll']);
+            Route::post('/banner/{id}', [BannerController::class, 'update']);
+            Route::delete('/banner/{id}', [BannerController::class, 'delete']);
+
         });
     });
 });

@@ -8,6 +8,8 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
+    'App\\Http\\Controllers\\BannerController' => $baseDir . '/app/Http/Controllers/BannerController.php',
+    'App\\Http\\Controllers\\CategoryController' => $baseDir . '/app/Http/Controllers/CategoryController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\ImageController' => $baseDir . '/app/Http/Controllers/ImageController.php',
     'App\\Http\\Controllers\\OrderController' => $baseDir . '/app/Http/Controllers/OrderController.php',
@@ -28,7 +30,7 @@ return array(
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\Models\\Banner' => $baseDir . '/app/Models/Banner.php',
-    'App\\Models\\Categories' => $baseDir . '/app/Models/Categories.php',
+    'App\\Models\\Category' => $baseDir . '/app/Models/Category.php',
     'App\\Models\\Image' => $baseDir . '/app/Models/Image.php',
     'App\\Models\\Order' => $baseDir . '/app/Models/Order.php',
     'App\\Models\\OrderLineItem' => $baseDir . '/app/Models/OrderLineItem.php',

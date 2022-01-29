@@ -19,7 +19,7 @@ class CreateBannersTable extends Migration
             $table->text('name');
             $table->longText('title')->nullable();
             $table->longText('sub_title')->nullable();
-            $table->binary('image')->nullable();
+            $table->longText('image')->nullable();
         });
     }
 
