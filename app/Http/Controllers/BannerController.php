@@ -10,12 +10,13 @@ class BannerController extends Controller
     public function create(Request $request){
         $input = $request->all();
 
-        $banner['name'] = $input['name'];
-        $banner['title'] = $input['title'];
-        $banner['sub_title'] = $input['sub_title'];
-
-        $path = $request->file('image')->store('images');
-        $banner['image'] = 'http://127.0.0.1:8000' . '/uploads/' . $path;
+        if (isset($input['name'])) $banner['name'] = $input['name'];
+        if (isset($input['title'])) $banner['title'] = $input['title'];
+        if (isset($input['sub_title'])) $banner['sub_title'] = $input['sub_title'];
+        if (isset($input['image'])) {
+            $path = $request->file('image')->store('images');
+            $banner['image'] = 'http://127.0.0.1:8000' . '/uploads/' . $path;
+        }
 
         Banner::create($banner);
 
@@ -25,7 +26,7 @@ class BannerController extends Controller
     public function showByName($name){
         $banner = Banner::where('name', $name)->get()[0];
         if ($banner){
-            return response()->json($banner, 200);
+            return response()->json([$banner], 200);
         }else{
             return response()->json(null, 404);
         }
