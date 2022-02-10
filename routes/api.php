@@ -41,6 +41,8 @@ Route::group(['prefix' => 'rest'], function () {
     Route::get('/categories', [CategoryController::class, 'showAll']);
     Route::get('/category/{name}', [CategoryController::class, 'showByName']);
 
+    Route::get('/banners', [BannerController::class, 'showAll']);
+
     /* AUTH */
     Route::group(['middleware' => ['auth:api']], function() {
         /* User */
@@ -85,7 +87,6 @@ Route::group(['prefix' => 'rest'], function () {
             /* Banner */
             Route::post('/banner', [BannerController::class, 'create']);
             Route::get('/banner/{name}', [BannerController::class, 'showByName']);
-            Route::get('/banners', [BannerController::class, 'showAll']);
             Route::post('/banner/{id}', [BannerController::class, 'update']);
             Route::delete('/banner/{id}', [BannerController::class, 'delete']);
 
